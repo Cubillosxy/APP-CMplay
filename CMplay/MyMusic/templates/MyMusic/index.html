@@ -12,9 +12,11 @@
     <div class="row">
         <div >
 
-            <ul class="nav nav-pills" style="margin-bottom: 10px;">
-                <li role="presentation"><a href="{% url 'MyMusic:cancion-add'  %}">Añadir Nueva Cancion</a></li>
-            </ul>
+            <div class="center-block">
+                <ul class="nav text-center" style="margin-bottom: 10px;">
+                    <li role="presentation" ><a> <h2 style="font-family: 'Kaushan Script', cursive; text-transform: uppercase;">{{ username }}</h2> </a></li>
+                </ul>
+            </div>
 
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -28,21 +30,23 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Titulo</th>
-                            <th>Audio</th>
+                            <th>Nombre</th>
+                            <th>Artista</th>
+                            <th>Archivo de audio</th>
                             <th>Calificacion</th>
-                            <th>Usuario</th>
+                            <th>Subido por</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for song in canciones %}
                             <tr>
-                                <td>{{ song.titulo_cancion }}</td>
+                                <td> &nbsp;&nbsp;{{ song.titulo_cancion }}</td>
+                                <td>&nbsp;&nbsp;{{ song.artista }}</td>
                                 <td>
-                                    <a target="_blank" href="{{ song.audio.url }}">
+                                    <a target="_blank" href="{{ song.audio.url }}">&nbsp;&nbsp;
                                         <button type="button" class="btn btn-success btn-xs">
-                                            <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                            <span class="glyphicon glyphicon-play"></span>&nbsp Play
                                         </button>
                                     </a>
                                 </td>
@@ -50,7 +54,7 @@
                                     <a href="" class="btn-favorite"><span class="glyphicon glyphicon-star"> no diposnible</span></a>
                                 </td>
                                 <td>
-                                    {{ song.user.username }}
+                                   &nbsp;&nbsp; {{ song.user.username }}
 
                                 </td>
                                 <td>

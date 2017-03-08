@@ -29,7 +29,11 @@ def nueva_cancion(request):
                 }
                 return render(request, 'MyMusic/cancion_form.html', context)
             cancion.save()
-            return render(request, 'MyMusic/index.html', {'canciones': canciones})
+            context = {
+                'canciones': canciones,
+                'username': request.user.username
+            }
+            return render(request, 'MyMusic/index.html', context)
         context = {
             "form": form,
         }
@@ -56,7 +60,11 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 canciones = Cancion.objects.filter(user=request.user)
-                return render(request, 'MyMusic/index.html', {'canciones': canciones})
+                context={
+                    'canciones': canciones,
+                     'username': username
+                         }
+                return render(request, 'MyMusic/index.html',context )
             else:
                 return render(request, 'MyMusic/login_form.html', {'error_message': 'Su cuenta ha sido deshabilitada'})
         else:
@@ -77,7 +85,11 @@ def register(request):
             if user.is_active:
                 login(request, user)
                 canciones = Cancion.objects.filter(user=request.user)
-                return render(request, 'MyMusic/index.html', {'canciones': canciones})
+                context={
+                    'canciones': canciones,
+                     'username': username
+                         }
+                return render(request, 'MyMusic/index.html', context)
     context = {
         "form": form,
     }
@@ -102,10 +114,10 @@ def index(request):
             """
             return render(request, 'MyMusic/index.html', {
                 'canciones': canciones,
-                #songs': song_results,
+                'username': request.user.username,
             })
         else:
-            return render(request, 'MyMusic/index.html', {'canciones': canciones_user})
+            return render(request, 'MyMusic/index.html', {'canciones': canciones_user, 'username': request.user.username})
 
 
 
