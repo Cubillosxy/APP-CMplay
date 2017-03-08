@@ -8,33 +8,74 @@
 {% block canciones_active %}active{% endblock %}
 
 {% block body %}
-    <div class="canciones-container container-fluid">
-        <div class="row">
-            {% if canciones %}
-                {% for cancion in canciones %}
-                    <div class="col-sm-4 col-lg-2">
-                        <div class="thumbnail">
+<div class="container-fluid songs-container">
+    <div class="row">
+        <div >
 
-                            <div class="caption">
-                                <h2>{{ cancion.user.usename }}</h2>
-                                <h4>{{ cancion.artista }}</h4>
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation"><a href="{% url 'MyMusic:cancion-add'  %}">Añadir Nueva Cancion</a></li>
+            </ul>
 
-                                 <!-- Delete Cancion -->
-                                <form action="#" method="post" style="display: inline;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="cancion_id" value="{{ cancion.id }}" />
-                                    <button type="submit" class="btn btn-default btn-sm">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                </form>
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
+                   <h3 class="text-center">canciones</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Audio</th>
+                            <th>Calificacion</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for song in canciones %}
+                            <tr>
+                                <td>{{ song.titulo_cancion }}</td>
+                                <td>
+                                    <a target="_blank" href="{{ song.audio.url }}">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" class="btn-favorite"><span class="glyphicon glyphicon-star"> no diposnible</span></a>
+                                </td>
+                                <td>
+                                    {{ song.user.username }}
+
+                                </td>
+                                <td>
+                                    <form action="" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="song_id" value="{{ song.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"> </span>&nbsp; Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
         </div>
     </div>
+
+</div>
+
+
 {% endblock %}
 
 

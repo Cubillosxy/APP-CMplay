@@ -3,3 +3,4 @@ from .models import Cancion,Lista
 
 # Register your models here.
 admin.site.register(Cancion)
+admin.site.register(Lista)

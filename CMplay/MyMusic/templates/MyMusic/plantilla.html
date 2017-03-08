@@ -26,14 +26,14 @@
                         </a>
                     </li>
                     <li class="{% block listas_active %}{% endblock %}">
-                        <a href="{% url 'MyMusic:index' %}">
+                        <a href="">
                             <span class="glyphicon glyphicon-plus"  aria-hidden="true">  </span> &nbsp;<strong > Listas de reproducción </strong>
                         </a>
                     </li>
                 </ul>
 
     <!--         -->
-                <form class="navbar-form navbar-left"  role="search" method="get" action="#">
+                <form class="navbar-form navbar-left"  role="search" method="get" action="{% url 'MyMusic:index' %}">
                     <div class="form-group">
                         <input type="text" class="form-control"  name="q" value="">
                     </div>
@@ -41,13 +41,13 @@
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="{% block addcanion_active %}{% endblock %}">
+                    <li class="{% block addcancion_active %}{% endblock %}">
                         <a href="{% url 'MyMusic:cancion-add' %}">
                             <span class="glyphicon glyphicon-plus"  aria-hidden="true">  </span> &nbsp;<strong > Addicionar Cancion</strong>
                         </a>
                     </li>
                     <li class="">
-                        <a href=" #">
+                        <a href="{% url 'MyMusic:logout_user' %}">
                             <span class="glyphicon glyphicon-log-out"  aria-hidden="true">  </span> &nbsp;<strong > Cerrar Sesión </strong>
                         </a>
                     </li>
