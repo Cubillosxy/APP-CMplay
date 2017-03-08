@@ -1,0 +1,47 @@
+<title>
+    Music-Add
+</title>
+{% extends 'MyMusic/plantilla_inicio.html' %}
+{% block login_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="col-md-19">
+        <div class="col-sm-6 col-sm-offset-2">
+            <h3 class="col-sm-offset-2"> Iniciar Sesión</h3>
+            {% if error_message %}
+                <div class="col-sm-13">
+                    <p class="col-sm-13" style="color: red "><strong>{{ error_message }}</strong></p>
+                </div>
+
+            {% endif %}
+            <form method="POST" action="{% url 'MyMusic:login_user' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="id_username">
+                        Username:
+                    </label>
+                    <div class="col-sm-13">
+                        <input id="id_username" maxlength="30" name="username" type="text">
+                    </div>
+                   </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="id_password">
+                        Password:
+                    </label>
+                    <p></p>
+                    <div class="col-sm-13">
+                        <input id="id_password" maxlength="30" name="password" type="password">
+                    </div>
+                </div>
+
+              <h3 class="col-sm-offset-2"> <input type="submit" class="btn btn-info" value=" Iniciar Sesión "></h3>
+            </form>
+                 <div class="panel-heading">
+                     <a href="{% url 'MyMusic:register' %}">Click aquí</a> para crear una cuenta.
+                </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

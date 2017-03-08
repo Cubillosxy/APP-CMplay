@@ -1,0 +1,32 @@
+<title>
+    Registro
+</title>
+{% extends 'MyMusic/plantilla_inicio.html' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+       <div class="row">
+           <div class="col-sm-6 col-md-5">
+               <div class="panel panel-default">
+                   <div class="panel-body">
+                        <h3> Nueva Cuenta</h3>
+                        {% if error_massage %}
+                            <p><strong> {{ error_massage }}</strong> </p>
+                        {% endif %}
+
+                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% include 'MyMusic/form-template.html' %}
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success"> Enviar</button>
+                                </div>
+                            </div>
+                        </form>
+                   </div>
+               </div>
+           </div>
+       </div>
+    </div>
+{% endblock %}

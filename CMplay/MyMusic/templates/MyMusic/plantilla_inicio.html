@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include 'MyMusic/librarys.html' %}
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <!-- Logo-->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                    <span class="icon-bar">  </span>
+                </button>
+                <a class="navbar-brand" href="{% url 'MyMusic:login_user' %}"> <strong > Inicio  </strong>   </a>
+
+            </div>
+
+            <!-- item -->
+            <div class="collapse navbar-collapse" id="topNavBar" >
+                <ul class="nav navbar-nav">
+                    <li class="{% block register_active %}{% endblock %}">
+                        <a href="{% url 'MyMusic:register' %}">
+                            <span class="glyphicon glyphicon-music"  aria-hidden="true">  </span> &nbsp; <strong > Registrese  </strong>
+                        </a>
+                    </li>
+                    <li class="{% block login_active %}{% endblock %}">
+                        <a href="{% url 'MyMusic:login_user' %}">
+                            <span class="glyphicon glyphicon-plus"  aria-hidden="true">  </span> &nbsp;<strong > Inicio de Sesión </strong>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+{% block body %}
+
+{% endblock %}
+</body>
+</html>
