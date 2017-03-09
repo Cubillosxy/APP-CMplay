@@ -13,10 +13,10 @@ class Cancion(models.Model):
         return self.titulo_cancion
 
 class Lista(models.Model):
-    user_list = models.ForeignKey(User, default=1)
-    titulo_lista=models.CharField(max_length=500)
-    cancion = models.ManyToManyField(Cancion,default=None)
+    user_list = models.ForeignKey(User, default=User)
+    titulo_de_lista=models.CharField(max_length=500)
+    canciones = models.ManyToManyField(Cancion,default=None)
 
 
     def __str__(self):
-        return self.titulo_lista
+        return self.titulo_de_lista

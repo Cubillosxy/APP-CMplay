@@ -1,7 +1,7 @@
 <!-- cargar los patch a su staticos
 -->
 <title>
-    Music-Addicts
+    CMPlayList
 </title>
 
 {% extends 'MyMusic/plantilla.html' %}
@@ -17,11 +17,11 @@
                     <li role="presentation" ><a> <h2 style="font-family: 'Kaushan Script', cursive; text-transform: uppercase;">{{ username }}</h2> </a></li>
                 </ul>
             </div>
-
+            {% if canciones %}
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                   <h3 class="text-center">canciones</h3>
+                   <h2 class="text-center" style="text-transform: capitalize">canciones</h2>
 
                     {% if error_message %}
                         <p><strong>{{ error_message }}</strong></p>
@@ -58,13 +58,15 @@
 
                                 </td>
                                 <td>
+                                    {% if song.user.username == username %}
                                     <form action="" method="post" style="display: inline;">
                                         {% csrf_token %}
                                         <input type="hidden" name="song_id" value="{{ song.id }}" />
-                                        <button type="submit" class="btn btn-danger btn-xs">
+                                        <button type="submit" class="btn btn-danger btn-xs   ">
                                             <span class="glyphicon glyphicon-remove"> </span>&nbsp; Eliminar
                                         </button>
                                     </form>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -73,7 +75,19 @@
 
                 </div>
             </div>
+        {% else %}
+            <div class="col-centered">
+                <h3>No tienes ninguna canción registrada</h3>
+            </div>
+        {% endif %}
+            <div class="col-centered">
 
+                <a href="{% url 'MyMusic:cancion-add' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Añadir Canción
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 

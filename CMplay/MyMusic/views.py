@@ -1,12 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
-from django.shortcuts import render,get_object_or_404
-from .forms import UserForm,CancionForm
+from django.shortcuts import render,get_object_or_404,redirect
+from .forms import UserForm,CancionForm,ListaForm
 from .models import Cancion,Lista
 
+#extensiones permitidas para archivos de audio
 AUDIO_EXT = ['wav', 'mp3', 'ogg']
 
+
+#vista de formulario añadir
 def nueva_cancion(request):
     if not request.user.is_authenticated():
         return render(request, 'MyMusic/login_form.html')
@@ -18,6 +22,8 @@ def nueva_cancion(request):
             cancion.user = request.user
 
             cancion.audio = request.FILES['audio']
+
+            #recuperamos el archivo y guardamos su extensión
             file_type = cancion.audio.url.split('.')[-1]
             file_type = file_type.lower()
             canciones = Cancion.objects.filter(user=request.user)
@@ -27,6 +33,7 @@ def nueva_cancion(request):
                     'form': form,
                     'error_message': 'El archivo debe ser MP3',
                 }
+                #enviamos de vuelta a la pagina
                 return render(request, 'MyMusic/cancion_form.html', context)
             cancion.save()
             context = {
@@ -38,6 +45,27 @@ def nueva_cancion(request):
             "form": form,
         }
         return render(request, 'MyMusic/cancion_form.html', context)
+
+#vista nueva lista
+def nueva_lista(request):
+    canciones_user = Cancion.objects.filter(user=request.user)
+    len_cancione=len(canciones_user)
+
+    if len_cancione != 0:
+        messages.success(request, "Estamos probando")
+
+    else:
+        messages.success(request, "Voto registrado. ¡Gracias por participar!")
+        print ("esas")
+        return redirect('/')
+
+def listas_view(request):
+    canciones_user = Cancion.objects.filter(user=request.user)
+    context = {
+        'canciones': canciones_user,
+        'username': request.user.username
+    }
+    return render(request, 'MyMusic/listas.html', context)
 
 
 

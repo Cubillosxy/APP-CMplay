@@ -2,9 +2,6 @@ body {
     background: url("images/images2.jpg") ;
 }
 
-ul {
-    color: red ;
-}
 
  #str1 {
   font-family: 'Satisfy';
@@ -18,4 +15,9 @@ ul {
 /* latin-ext */
 .navbar-brand {
 font-family: 'fantasy';
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
 }
