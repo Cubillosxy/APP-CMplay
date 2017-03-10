@@ -25,7 +25,9 @@
 
                             <div class="caption">
                                 <h2>{{ lista.titulo_de_lista }}</h2>
-                                <h4>{{ lista.canciones}}</h4>
+                                {% for cancion in lista.canciones.all %}
+                                    <h4>{{ cancion.titulo_cancion}}</h4>
+                                {% endfor %}
 
                                  <!-- Delete Cancion -->
                                 <form action="#" method="post" style="display: inline;">
@@ -44,14 +46,20 @@
                      <h3>No tienes listas de reproducción</h3>
                 </div>
             {% endif %}
-            <div class="col-sm-12">
-                <br>
-                <a href="">
-                    <button type="button" class="btn btn-success">
-                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Crear Nueva lista
-                    </button>
-                </a>
-            </div>
+            {% if  canciones %}
+                <div class="col-sm-12">
+                    <br>
+                    <a href="{% url 'MyMusic:lista-add' %}">
+                        <button type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>&nbsp; Crear Nueva lista
+                        </button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="panel-heading">
+                     <h3> Para crear listas una debes tener canciones registradas</h3>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -51,7 +51,15 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="" class="btn-favorite"><span class="glyphicon glyphicon-star"> no diposnible</span></a>
+                                    {% if not calification %}
+                                        {% for i in "cinco" %}
+                                            <a class="btn-favorite"><span class="glyphicon glyphicon-star "> </span></a>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for i in calification %}
+                                            <a class="btn-favorite"><span class="glyphicon glyphicon-star active"> </span></a>
+                                        {% endfor %}
+                                    {% endif %}
                                 </td>
                                 <td>
                                    &nbsp;&nbsp; {{ song.user.username }}

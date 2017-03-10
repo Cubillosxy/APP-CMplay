@@ -18,7 +18,19 @@ class CancionForm(forms.ModelForm):
         labels={'titulo_cancion':'Titulo de la Canción'}
 
 class ListaForm(forms.ModelForm):
+    #canciones=forms.MultipleChoiceField(Cancion.objects.all())   #no funciona
+    #canciones = forms.MultipleChoiceField( widget=forms.CheckboxSelectMultiple) ,widget=forms.SelectMultiple
+    canciones=forms.ModelMultipleChoiceField(queryset=Cancion.objects.all())
+    #canciones = forms.ModelMultipleChoiceField(queryset=Cancion.objects.all())
 
     class Meta:
         model = Lista
         fields = ['titulo_de_lista']
+
+        """
+
+    def __init__(self, *args, **kwargs):
+        super(ChoiceForm, self).__init__(*args, **kwargs)
+        self.fields['countries'] =  ModelChoiceField(queryset=YourModel.objects.all()),
+                                             empty_label="Choose a countries",
+        """

@@ -1,17 +1,16 @@
 <title>
-    Añadir Cancion
+    Nueva lista
 </title>
 {% extends 'MyMusic/plantilla.html' %}
-{% block canciones_active %} active {% endblock %}
+
 
 {% block body %}
     <div class="container-fluid">
        <div class="row">
-           <div class="col-sm-12 col-md-7">
+           <div class="col-sm-24 col-md-8">
                <div class="panel panel-default">
                    <div class="panel-body">
-                        <h3> Añadir nueva cancion</h3>
-
+                        <h3> Añadir nueva lista</h3>
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% include 'MyMusic/form-template.html' %}

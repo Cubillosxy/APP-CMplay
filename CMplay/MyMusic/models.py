@@ -15,8 +15,10 @@ class Cancion(models.Model):
 class Lista(models.Model):
     user_list = models.ForeignKey(User, default=User)
     titulo_de_lista=models.CharField(max_length=500)
-    canciones = models.ManyToManyField(Cancion,default=None)
-
+    canciones = models.ManyToManyField(Cancion,blank=True)
 
     def __str__(self):
         return self.titulo_de_lista
+
+class Calificacion(models.Model):
+    pass
