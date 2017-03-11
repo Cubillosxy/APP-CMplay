@@ -21,4 +21,10 @@ class Lista(models.Model):
         return self.titulo_de_lista
 
 class Calificacion(models.Model):
-    pass
+    user_calificador=models.CharField(max_length=30)
+    rating=models.IntegerField(default=0)
+    fue_calificado=models.BooleanField(default=False)
+    cancion_calificada=models.ForeignKey(Cancion)
+
+    def __str__(self):
+        return self.user_calificador

@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^listas/$', views.listas_view, name='listas'),
     url(r'^nueva_lista/$', views.nueva_lista, name='lista-add'),
 
+    url(r'^(?P<ratin>[0-9]+)/(?P<cancion_act>[a-zA_Z]+)/$',views.calificar,name='ratin_cancion'),
 
     url(r'^(?P<user_id>[0-9]+)/$', views.detail, name='detail'),
 ]

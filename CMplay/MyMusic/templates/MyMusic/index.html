@@ -8,7 +8,7 @@
 {% block canciones_active %}active{% endblock %}
 
 {% block body %}
-<div class="container-fluid songs-container">
+<div class="container-fluid ">
     <div class="row">
         <div >
 
@@ -51,14 +51,16 @@
                                     </a>
                                 </td>
                                 <td>
-                                    {% if not calification %}
-                                        {% for i in "cinco" %}
-                                            <a class="btn-favorite"><span class="glyphicon glyphicon-star "> </span></a>
+                                    {% if calificacion %}
+                                         {% for i in calificacion %}
+                                            <a class="glyphicon glyphicon-star active"></a>
                                         {% endfor %}
+                                         <h6>calificada</h6>
                                     {% else %}
-                                        {% for i in calification %}
-                                            <a class="btn-favorite"><span class="glyphicon glyphicon-star active"> </span></a>
+                                        {% for i in "cinco" %}
+                                           <a href="{% url 'MyMusic:ratin_cancion' forloop.counter song %}"> <span class="glyphicon glyphicon-star-empty"></span></a>
                                         {% endfor %}
+                                        <h6>Sin calificar</h6>
                                     {% endif %}
                                 </td>
                                 <td>
