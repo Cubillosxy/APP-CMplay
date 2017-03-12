@@ -1,7 +1,10 @@
 from django.conf.urls import url
 from . import views
 
+#namespace
 app_name = 'MyMusic'
+
+#url's registradas con sus respetivas vistas ,
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -11,8 +14,18 @@ urlpatterns = [
     url(r'^cancionadd/$', views.nueva_cancion, name='cancion-add'),
     url(r'^listas/$', views.listas_view, name='listas'),
     url(r'^nueva_lista/$', views.nueva_lista, name='lista-add'),
+    #direccion dinamica , depende de la id de la lista
+    url(r'^(?P<lista_id>[0-9]+)/borrar_lista/$', views.borrar_lista, name='eliminar_lista'),
+    url(r'^(?P<lista_id>[0-9]+)/datalles/$', views.detail_lista, name='lista_detallada'),
 
-    url(r'^(?P<ratin>[0-9]+)/(?P<cancion_act>[a-zA_Z]+)/$',views.calificar,name='ratin_cancion'),
+    #editando
+    url(r'^(?P<cancion_id>[0-9]+)/borrar_cancion/$', views.borar_cancion, name='eliminar_cancion'),
 
-    url(r'^(?P<user_id>[0-9]+)/$', views.detail, name='detail'),
+    #en edicion
+
+
+    url(r'^(?P<ratin>[0-9]+)/(?P<cancion_id>[\w-]+)/$', views.calificar, name='ratin_cancion'),
+    #url(r'^(?P<ratin>[0-9]+)/(?P<cancion_act>[a-zA_Z]+)/$',views.calificar,name='ratin_cancion'),
+
+
 ]

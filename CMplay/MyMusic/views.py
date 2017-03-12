@@ -10,14 +10,18 @@ from .models import Cancion,Lista,Calificacion
 AUDIO_EXT = ['wav', 'mp3']
 
 
-#vista de formulario añadir
+#vista de formulario añadir cancion
 def nueva_cancion(request):
+
+    #si el usuario se ha logeado.  lo devuelve a paina de inicio
     if not request.user.is_authenticated():
         return render(request, 'MyMusic/login_form.html')
     else:
+        #recuperamos información del formulario puesnto el la pagina html
         form = CancionForm(request.POST or None, request.FILES or None)
 
         if form.is_valid():
+            #guardamos el formulario en una variable indicando que aun no terminamos de gestionar los datos
             cancion = form.save(commit=False)
             cancion.user = request.user
 
@@ -33,7 +37,7 @@ def nueva_cancion(request):
                     'form': form,
                     'error_message': 'El archivo debe ser MP3 o WAV',
                 }
-                #enviamos de vuelta a la pagina
+                #enviamos de vuelta a la pagina cn un mensaje
                 return render(request, 'MyMusic/cancion_form.html', context)
             cancion.save()
             context = {
@@ -49,40 +53,51 @@ def nueva_cancion(request):
 
 #vista nueva lista
 def nueva_lista(request):
-    #form=ListaForm(request.POST or None, request.FILES or None)
-    form = ListaForm(request.user,request.POST or None, request.FILES or None)
+
+    if not request.user.is_authenticated():
+        return render(request, 'MyMusic/login_form.html')
+    else:
+
+        #form=ListaForm(request.POST or None, request.FILES or None)
+        form = ListaForm(request.user,request.POST or None, request.FILES or None)
 
 
+        if form.is_valid():
+            lista = form.save(commit=False)
+            lista.user_list = request.user
+            lista.save()
 
-    if form.is_valid():
-        lista = form.save(commit=False)
-        lista.user_list = request.user
-        lista.save()
+            #añadimos las  canciones,
+            lista.canciones = form.cleaned_data['canciones']
 
-        lista.canciones = form.cleaned_data['canciones']
-
-
-        context = {
-            'username': request.user.username,
-            'lista': lista,
+            context = {
+                'username': request.user.username,
+                'lista': lista,
+            }
+            return render(request,'MyMusic/lista_detail.html',context)
+            #return redirect('/')
+        context={
+            'form':form,
+            'error_message': 'Error ',
         }
-        #return render(request,'MyMusic/lista_detail.html',context)
-        return redirect('/')
-    context={
-        'form':form,
-        'error_message': 'Error ',
-    }
-    return render(request,'MyMusic/lista_form.html',context)
+        return render(request,'MyMusic/lista_form.html',context)
+
+
 
 def listas_view(request):
-    canciones_user = Cancion.objects.filter(user=request.user)
-    listas_user=Lista.objects.filter(user_list=request.user)
-    context = {
-        'canciones': canciones_user,
-        'username': request.user.username,
-        'listas':listas_user,
-    }
-    return render(request, 'MyMusic/listas.html', context)
+
+    if not request.user.is_authenticated():
+        return render(request, 'MyMusic/login_form.html')
+    else:
+
+        canciones_user = Cancion.objects.filter(user=request.user)
+        listas_user=Lista.objects.filter(user_list=request.user)
+        context = {
+            'canciones': canciones_user,
+            'username': request.user.username,
+            'listas':listas_user,
+        }
+        return render(request, 'MyMusic/listas.html', context)
 
 
 
@@ -157,17 +172,53 @@ def index(request):
                 Q(song_title__icontains=query)
             ).distinct()
             """
-            return render(request, 'MyMusic/index.html', {
+            context={
                 'canciones': canciones,
                 'username': request.user.username,
-            })
+            }
+            return render(request, 'MyMusic/index.html', context)
         else:
             return render(request, 'MyMusic/index.html', {'canciones': canciones_user, 'username': request.user.username})
 
-def calificar(request,ratin, cancion_act):
+
+def borar_cancion(request,cancion_id):
+    cancion=Cancion.objects.get(pk=cancion_id)
+    cancion.delete()
+    canciones = Cancion.objects.filter(user=request.user)
+
+    #tambien se deben borrar todas las calificaciones de esta canción.. mas adelante edwin
+
+    context = {
+        'canciones': canciones,
+        'username': request.user.username,
+    }
+    return render(request, 'MyMusic/index.html', context)
+
+def borrar_lista(request, lista_id):
+    canciones_user = Cancion.objects.filter(user=request.user)
+    lista=Lista.objects.get(pk=lista_id)
+    lista.delete()
+    listas_user=Lista.objects.filter(user_list=request.user)
+    context = {
+        'canciones': canciones_user,
+        'username': request.user.username,
+        'listas':listas_user,
+    }
+    return render(request, 'MyMusic/listas.html', context)
+
+
+def detail_lista(request, lista_id):
+    lista=Lista.objects.get(pk=lista_id)
+    context = {
+        'username': request.user.username,
+        'lista':lista,
+    }
+    return render(request, 'MyMusic/lista_detail.html', context)
+
+def calificar(request,ratin, cancion_id):
     try:
-        #cancion=get_object_or_404(Cancion, pk=cancion.pk)  #recuperamos la cancion indicada
-        cancion=Cancion.get(pk=cancion_act.pk)
+
+        cancion=Cancion.objects.get(pk=cancion_id)
         # obtenemos todas las calificaciones de la canción
         calificaciones=cancion.calificacion_set.all()
 
@@ -175,17 +226,18 @@ def calificar(request,ratin, cancion_act):
         for cancion_cal in calificaciones:
             if cancion_cal.user_calificador==request.user.username:
                 print ("la cancion ya fue calificada")
-                context={}
                 return JsonResponse({'success': False})
         calificacion = Calificacion(user_calificador=request.user.username, rating=ratin, fue_calificado=True,
                                     cancion_calificada=cancion)
         calificacion.save()
         print ("Se califico")
-        context={}
+
         return JsonResponse({'success': True})
     except :
-        return JsonResponse({'success': False})
-        print ("No se califico")
+        cancion = Cancion.get(pk=cancion_id)
+
+        return JsonResponse({'success': False,'ratin':ratin,'cancion':cancion,
+                             })
 
 """
     else:
@@ -194,5 +246,3 @@ def calificar(request,ratin, cancion_act):
         calificacion.save()
 """
 
-def detail(request):
-    pass

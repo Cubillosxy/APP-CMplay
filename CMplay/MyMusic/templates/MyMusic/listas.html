@@ -18,24 +18,31 @@
 
             </div>
             {% if listas %}
-                <h3 class="text-center" id="str1">Listas de Reproduccíon</h3>
+                <h3 class="text-center " id="str1" style="text-transform: uppercase">Listas de Reproduccíon</h3>
+
                 {% for lista in listas %}
-                    <div class="col-sm-4 col-lg-2">
+                    <div class="col-sm-6 col-lg-4">
                         <div class="thumbnail">
 
                             <div class="caption">
-                                <h2>{{ lista.titulo_de_lista }}</h2>
-                                {% for cancion in lista.canciones.all %}
-                                    <h4>{{ cancion.titulo_cancion}}</h4>
-                                {% endfor %}
+                                <a href="{% url 'MyMusic:lista_detallada' lista.id %}">
+                                    <h2 style="text-transform: capitalize" class="bg-info text-center">{{ lista.titulo_de_lista }}</h2>
+                                </a>
 
+                                <dl>
+                                    {% for cancion in lista.canciones.all %}
+                                       <dd> <h4 style="text-transform: capitalize">-{{ cancion.titulo_cancion}}</h4></dd>
+                                    {% endfor %}
+                                </dl>
                                  <!-- Delete Cancion -->
-                                <form action="#" method="post" style="display: inline;">
+                                <form action="{% url 'MyMusic:eliminar_lista' lista.id %}" method="post" style="display: inline;">
                                     {% csrf_token %}
                                     <input type="hidden" name="cancion_id" value="{{ lista.id }}" />
-                                    <button type="submit" class="btn btn-default btn-sm">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                                    <abbr title="Eliminar lista">
+                                        <button type="submit" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </abbr>
                                 </form>
                             </div>
                         </div>

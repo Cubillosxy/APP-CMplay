@@ -1,0 +1,57 @@
+<!-- cargar los patch a su staticos
+-->
+<title>
+    CMPlaylist-Detalles Lista
+</title>
+
+{% extends 'MyMusic/plantilla.html' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="center-block">
+                <ul class="nav text-center" style="margin-bottom: 10px;">
+                    <li role="presentation" ><a> <h2 style="font-family: 'Kaushan Script', cursive; text-transform: uppercase;">{{ username }}</h2> </a></li>
+
+                </ul>
+            </div>
+            <div class="panel panel-collapse ">
+                <div class="panel-default">
+                   <h2 class="text-center" style="text-transform: capitalize"> {{ lista.titulo_de_lista }}</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-transform: capitalize">Nombre</th>
+                                <th hstyle="text-transform: capitalize">Artista</th>
+                                <th>Archivo de audio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for cancion in lista.canciones.all %}
+                            <tr>
+                                <td> &nbsp;&nbsp;{{ cancion.titulo_cancion }}</td>
+                                <td>&nbsp;&nbsp;{{ cancion.artista }}</td>
+                                <td>
+                                    <a target="_blank" href="{{ cancion.audio.url }}">&nbsp;&nbsp;
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <span class="glyphicon glyphicon-play"></span>&nbsp Play
+                                        </button>
+                                    </a>
+                                </td>
+
+                                <td>
+
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

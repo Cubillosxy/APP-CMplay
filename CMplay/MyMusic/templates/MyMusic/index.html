@@ -4,11 +4,12 @@
     CMPlayList
 </title>
 
+
 {% extends 'MyMusic/plantilla.html' %}
 {% block canciones_active %}active{% endblock %}
 
 {% block body %}
-<div class="container-fluid ">
+<div class="container-fluid canciones-container">
     <div class="row">
         <div >
 
@@ -17,6 +18,7 @@
                     <li role="presentation" ><a> <h2 style="font-family: 'Kaushan Script', cursive; text-transform: uppercase;">{{ username }}</h2> </a></li>
                 </ul>
             </div>
+
             {% if canciones %}
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -44,23 +46,28 @@
                                 <td> &nbsp;&nbsp;{{ song.titulo_cancion }}</td>
                                 <td>&nbsp;&nbsp;{{ song.artista }}</td>
                                 <td>
-                                    <a target="_blank" href="{{ song.audio.url }}">&nbsp;&nbsp;
-                                        <button type="button" class="btn btn-success btn-xs">
-                                            <span class="glyphicon glyphicon-play"></span>&nbsp Play
+                                    <a target="_blank" href="{{ song.audio.url }}">
+                                        <button type="button" class="btn btn-success btn-xs ">
+                                               <span class="glyphicon glyphicon-play">&nbsp;Play</span>
                                         </button>
-                                    </a>
+                                     </a>
                                 </td>
                                 <td>
                                     {% if calificacion %}
+                                         <abbr title="Gracias por calificar">
                                          {% for i in calificacion %}
                                             <a class="glyphicon glyphicon-star active"></a>
                                         {% endfor %}
-                                         <h6>calificada</h6>
+                                         </abbr>
                                     {% else %}
+                                        <abbr title="Califica esta canción">
                                         {% for i in "cinco" %}
-                                           <a href="{% url 'MyMusic:ratin_cancion' forloop.counter song %}"> <span class="glyphicon glyphicon-star-empty"></span></a>
+                                           <a href="{% url 'MyMusic:ratin_cancion' forloop.counter song.id %}" class="btn-canciones" >
+                                               <span class="glyphicon glyphicon-star-empty"> </span>
+                                           </a>
+
                                         {% endfor %}
-                                        <h6>Sin calificar</h6>
+                                        </abbr>
                                     {% endif %}
                                 </td>
                                 <td>
@@ -69,12 +76,14 @@
                                 </td>
                                 <td>
                                     {% if song.user.username == username %}
-                                    <form action="" method="post" style="display: inline;">
+                                    <form action="{% url 'MyMusic:eliminar_cancion' song.id %}" method="post" style="display: inline;">
                                         {% csrf_token %}
                                         <input type="hidden" name="song_id" value="{{ song.id }}" />
-                                        <button type="submit" class="btn btn-danger btn-xs   ">
-                                            <span class="glyphicon glyphicon-remove"> </span>&nbsp; Eliminar
-                                        </button>
+                                        <abbr title="Eliminar Canción">
+                                            <button type="submit" class="btn btn-danger btn-xs   ">
+                                                <span class="glyphicon glyphicon-remove"> </span>&nbsp; Eliminar
+                                            </button>
+                                        </abbr>
                                     </form>
                                     {% endif %}
                                 </td>
@@ -87,7 +96,7 @@
             </div>
         {% else %}
             <div class="col-centered">
-                <h3>No tienes ninguna canción registrada</h3>
+                <h3>No se encontraron canciónes </h3>
             </div>
         {% endif %}
             <div class="col-centered">
@@ -102,7 +111,6 @@
     </div>
 
 </div>
-
 
 {% endblock %}
 
