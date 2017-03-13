@@ -26,9 +26,12 @@ class Lista(models.Model):
 class Calificacion(models.Model):
     user_calificador=models.CharField(max_length=30)
     rating=models.IntegerField(default=0)
+    rating_s=models.CharField(max_length=6)
     fue_calificado=models.BooleanField(default=False)
     #una canción puede tener muchas calificaciones
     cancion_calificada=models.ForeignKey(Cancion)
 
-    def __str__(self):
-        return self.user_calificador
+    def __int__(self):
+        return self.rating
+
+

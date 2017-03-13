@@ -1,18 +1,12 @@
 
 var CancionesPage = {
 	init: function() {
-		this.$container = $('.canciones-container');
-		this.render();
 		this.bindEvents();
 	},
 
-	render: function() {
-
-	},
-
 	bindEvents: function() {
-		$('.btn-canciones', this.$container).on('click', function(e) {
-			e.preventDefault();
+		$('.btn-canciones').on('click', function(e) {
+			e.preventDefault();  //evitamos que se abra el link
 
 			var self = $(this);
 			var url = $(this).attr('href');

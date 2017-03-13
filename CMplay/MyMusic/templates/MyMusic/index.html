@@ -42,10 +42,11 @@
                         </thead>
                         <tbody>
                         {% for song in canciones %}
+                            {% with cali=song.calificacion_set.filter user_calificador=username %}
                             <tr>
                                 <td> &nbsp;&nbsp;{{ song.titulo_cancion }}</td>
                                 <td>&nbsp;&nbsp;{{ song.artista }}</td>
-                                <td>
+                                <td>&nbsp;&nbsp;
                                     <a target="_blank" href="{{ song.audio.url }}">
                                         <button type="button" class="btn btn-success btn-xs ">
                                                <span class="glyphicon glyphicon-play">&nbsp;Play</span>
@@ -53,22 +54,26 @@
                                      </a>
                                 </td>
                                 <td>
-                                    {% if calificacion %}
+                                    {% if cali %}
                                          <abbr title="Gracias por calificar">
-                                         {% for i in calificacion %}
-                                            <a class="glyphicon glyphicon-star active"></a>
-                                        {% endfor %}
+
+                                         {% for elem in cali%}
+                                             {% for i in elem.rating_s %}
+                                                 <span class="glyphicon glyphicon-star"></span>
+                                             {% endfor %}
+                                         {% endfor %}
                                          </abbr>
                                     {% else %}
-                                        <abbr title="Califica esta canción">
+                                        <div>  </div>
+                                        <abbr title="Califica esta canción" id="cancion{{ song.id }}">
                                         {% for i in "cinco" %}
                                            <a href="{% url 'MyMusic:ratin_cancion' forloop.counter song.id %}" class="btn-canciones" >
                                                <span class="glyphicon glyphicon-star-empty"> </span>
                                            </a>
-
                                         {% endfor %}
                                         </abbr>
                                     {% endif %}
+
                                 </td>
                                 <td>
                                    &nbsp;&nbsp; {{ song.user.username }}
@@ -88,6 +93,7 @@
                                     {% endif %}
                                 </td>
                             </tr>
+                            {% endwith %}
                         {% endfor %}
                         </tbody>
                     </table>

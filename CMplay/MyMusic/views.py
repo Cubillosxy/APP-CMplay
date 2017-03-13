@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.shortcuts import render,get_object_or_404,redirect
 from .forms import UserForm,CancionForm,ListaForm
 from .models import Cancion,Lista,Calificacion
+from .funciones import *
 
 #extensiones permitidas para archivos de audio
 AUDIO_EXT = ['wav', 'mp3']
@@ -60,7 +61,6 @@ def nueva_lista(request):
 
         #form=ListaForm(request.POST or None, request.FILES or None)
         form = ListaForm(request.user,request.POST or None, request.FILES or None)
-
 
         if form.is_valid():
             lista = form.save(commit=False)
@@ -183,10 +183,12 @@ def index(request):
 
 def borar_cancion(request,cancion_id):
     cancion=Cancion.objects.get(pk=cancion_id)
+    califica_cancion=cancion.calificacion_set.all()
     cancion.delete()
+    califica_cancion.delete()
     canciones = Cancion.objects.filter(user=request.user)
 
-    #tambien se deben borrar todas las calificaciones de esta canción.. mas adelante edwin
+
 
     context = {
         'canciones': canciones,
@@ -216,33 +218,26 @@ def detail_lista(request, lista_id):
     return render(request, 'MyMusic/lista_detail.html', context)
 
 def calificar(request,ratin, cancion_id):
+
     try:
-
         cancion=Cancion.objects.get(pk=cancion_id)
-        # obtenemos todas las calificaciones de la canción
-        calificaciones=cancion.calificacion_set.all()
-
-        #buscamos si la cancion fue calificada por este usuario
-        for cancion_cal in calificaciones:
+        calificaciones=cancion.calificacion_set.all()                 # obtenemos todas las calificaciones de la canción
+        for cancion_cal in calificaciones:                          #buscamos si la cancion fue calificada por este usuario
             if cancion_cal.user_calificador==request.user.username:
                 print ("la cancion ya fue calificada")
                 return JsonResponse({'success': False})
-        calificacion = Calificacion(user_calificador=request.user.username, rating=ratin, fue_calificado=True,
+
+        ratin_s=StringNum(ratin)
+        calificacion = Calificacion(user_calificador=request.user.username, rating=ratin,rating_s=ratin_s, fue_calificado=True,
                                     cancion_calificada=cancion)
         calificacion.save()
-        print ("Se califico")
+        cancion_ap="cancion"+str(cancion_id)
 
-        return JsonResponse({'success': True})
+        print ("Se califico", cancion_ap)
+        return JsonResponse({'success': True,'ratin':ratin,'cancion':cancion_ap},)
     except :
-        cancion = Cancion.get(pk=cancion_id)
+        cancion = Cancion.objects.get(pk=cancion_id)
+        return JsonResponse({'success': False,'ratin':ratin,})
 
-        return JsonResponse({'success': False,'ratin':ratin,'cancion':cancion,
-                             })
 
-"""
-    else:
-        calificacion=Calificacion(user_calificador=request.user.username,rating=ratin,
-                                  fue_calificado=True,cancion_calificada=cancion)
-        calificacion.save()
-"""
 
