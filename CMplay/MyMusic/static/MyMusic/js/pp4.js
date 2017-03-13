@@ -15,7 +15,7 @@ $(document).ready(function() {
 					$(tag).empty();
 
 					for (var i = 0; i < res.ratin; i = i + 1) {
-						$(tag).append('<span class="glyphicon glyphicon-star"> </span>);
+						$(tag).append('<span class="glyphicon glyphicon-star"> </span>');
 					}
 
 				}

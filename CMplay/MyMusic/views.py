@@ -6,6 +6,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .forms import UserForm,CancionForm,ListaForm
 from .models import Cancion,Lista,Calificacion
 from .funciones import *
+from django.core.mail import EmailMultiAlternatives
 
 #extensiones permitidas para archivos de audio
 AUDIO_EXT = ['wav', 'mp3']
@@ -228,13 +229,28 @@ def calificar(request,ratin, cancion_id):
                 return JsonResponse({'success': False})
 
         ratin_s=StringNum(ratin)
-        calificacion = Calificacion(user_calificador=request.user.username, rating=ratin,rating_s=ratin_s, fue_calificado=True,
+        calificacion = Calificacion(user_calificador=request.user.username,
+                                    rating=ratin,rating_s=ratin_s, fue_calificado=True,
                                     cancion_calificada=cancion)
         calificacion.save()
-        cancion_ap="cancion"+str(cancion_id)
 
-        print ("Se califico", cancion_ap)
+        #envio de email
+        destino=cancion.user.email
+        html_conte="<center> han calificado tu cancion : </center> <br> " \
+                   " <p> Usuario calificador : "+request.user.username \
+                   + " </p>  <br> <p> calificacion :" + ratin + "</p><br> <p> hasta pronto. <p>"
+
+        msg=EmailMultiAlternatives('Calificarion tu cancion',html_conte,'from@server.com',[destino])
+
+        #contenido html
+        msg.attach_alternative(html_conte,'text/html')
+        msg.send()
+
+
+        cancion_ap="cancion"+str(cancion_id)
         return JsonResponse({'success': True,'ratin':ratin,'cancion':cancion_ap},)
+
+
     except :
         cancion = Cancion.objects.get(pk=cancion_id)
         return JsonResponse({'success': False,'ratin':ratin,})
