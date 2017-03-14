@@ -83,7 +83,31 @@ def nueva_lista(request):
         }
         return render(request,'MyMusic/lista_form.html',context)
 
+def editar_lista(request, lista_id):
+    lista=get_object_or_404(Lista, pk=lista_id)
+    context={}
+    if request.method == "POST":
+        form = ListaForm(request.user,request.POST, instance=lista)
+        if form.is_valid():
+            lista = form.save(commit=False)
+            lista.user_list = request.user
+            lista.save()
 
+            #añadimos las  canciones,
+            lista.canciones = form.cleaned_data['canciones']
+
+            context = {
+                'username': request.user.username,
+                'lista': lista,
+            }
+            return render(request,'MyMusic/lista_detail.html',context)
+    else:
+        form = ListaForm(request.user,instance=lista)
+        context={
+            'form':form,
+            'error_message': 'Error ',
+        }
+    return render(request,'MyMusic/lista_form.html',context)
 
 def listas_view(request):
 
@@ -209,6 +233,17 @@ def borrar_lista(request, lista_id):
     }
     return render(request, 'MyMusic/listas.html', context)
 
+def borrar_cancio_lista(request,lista_id,cancion_id):
+    cancion=Cancion.objects.get(pk=cancion_id)
+    lista=Lista.objects.get(pk=lista_id)
+    #cancion.lista_set.remove(lista)
+    lista.canciones.remove(cancion)
+    context = {
+        'username': request.user.username,
+        'lista':lista,
+    }
+    return render(request, 'MyMusic/lista_detail.html', context)
+
 
 def detail_lista(request, lista_id):
     lista=Lista.objects.get(pk=lista_id)
@@ -234,17 +269,22 @@ def calificar(request,ratin, cancion_id):
                                     cancion_calificada=cancion)
         calificacion.save()
 
-        #envio de email
-        destino=cancion.user.email
-        html_conte="<center> han calificado tu cancion : </center> <br> " \
-                   " <p> Usuario calificador : "+request.user.username \
-                   + " </p>  <br> <p> calificacion :" + ratin + "</p><br> <p> hasta pronto. <p>"
+        """
+        envio de email
+        enviamos email si calificamos una cancion que no sea del usuario actual.
+        """
+        if cancion.user.username!=request.user.username:
 
-        msg=EmailMultiAlternatives('Calificarion tu cancion',html_conte,'from@server.com',[destino])
+            destino=cancion.user.email
+            html_conte="<center> han calificado tu cancion : </center> <br> " \
+                       " <p> Usuario calificador : "+request.user.username \
+                       + " </p>  <br> <p> calificacion :" + ratin + "</p><br> <p> hasta pronto. <p>"
 
-        #contenido html
-        msg.attach_alternative(html_conte,'text/html')
-        msg.send()
+            msg=EmailMultiAlternatives('Calificarion tu cancion',html_conte,'from@server.com',[destino])
+
+            #contenido html
+            msg.attach_alternative(html_conte,'text/html')
+            msg.send()
 
 
         cancion_ap="cancion"+str(cancion_id)

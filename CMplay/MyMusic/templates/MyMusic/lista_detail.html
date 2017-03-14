@@ -31,18 +31,25 @@
                         <tbody>
                         {% for cancion in lista.canciones.all %}
                             <tr>
-                                <td> &nbsp;&nbsp;{{ cancion.titulo_cancion }}</td>
-                                <td>&nbsp;&nbsp;{{ cancion.artista }}</td>
-                                <td>
-                                    <a target="_blank" href="{{ cancion.audio.url }}">&nbsp;&nbsp;
+                                <td style="text-transform: capitalize"> &nbsp;&nbsp;{{ cancion.titulo_cancion }}</td>
+                                <td style="text-transform: capitalize">&nbsp;&nbsp;{{ cancion.artista }}</td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a target="_blank" href="{{ cancion.audio.url }}">
                                         <button type="button" class="btn btn-success btn-xs">
-                                            <span class="glyphicon glyphicon-play"></span>&nbsp Play
+                                            <span class="glyphicon glyphicon-play">&nbsp;</span>Play
                                         </button>
                                     </a>
                                 </td>
 
                                 <td>
 
+                                    <a href="{% url 'MyMusic:borrar_cancion_lista' lista.id cancion.id %}">
+                                        <abbr title="Eliminar Canción">
+                                            <button type="submit" class="btn btn-danger btn-xs   ">
+                                                <span class="glyphicon glyphicon-remove"> </span>&nbsp; Eliminar
+                                            </button>
+                                        </abbr>
+                                    </a>
 
                                 </td>
                             </tr>
@@ -51,6 +58,13 @@
                     </table>
 
                 </div>
+                    <div class="col-centered">
+                        <a href="{% url 'MyMusic:editar_list' lista.id %}">
+                            <button type="button" class="btn btn-success">
+                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;Añadir/Editar lista
+                            </button>
+                        </a>
+                    </div>
             </div>
         </div>
     </div>

@@ -17,14 +17,14 @@ urlpatterns = [
     #direccion dinamica , depende de la id de la lista
     url(r'^(?P<lista_id>[0-9]+)/borrar_lista/$', views.borrar_lista, name='eliminar_lista'),
     url(r'^(?P<lista_id>[0-9]+)/datalles/$', views.detail_lista, name='lista_detallada'),
-
-    #editando
     url(r'^(?P<cancion_id>[0-9]+)/borrar_cancion/$', views.borar_cancion, name='eliminar_cancion'),
+    url(r'^(?P<ratin>[0-9]+)/(?P<cancion_id>[0-9]+)/$', views.calificar, name='ratin_cancion'),
+    url(r'^(?P<lista_id>[0-9]+)/borrar/(?P<cancion_id>[0-9]+)/$', views.borrar_cancio_lista, name='borrar_cancion_lista'),
 
     #en edicion
 
+    url(r'^(?P<lista_id>[0-9]+)/$', views.editar_lista, name='editar_list'),
 
-    url(r'^(?P<ratin>[0-9]+)/(?P<cancion_id>[\w-]+)/$', views.calificar, name='ratin_cancion'),
     #url(r'^(?P<ratin>[0-9]+)/(?P<cancion_act>[a-zA_Z]+)/$',views.calificar,name='ratin_cancion'),
 
 
