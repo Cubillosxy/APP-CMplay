@@ -213,8 +213,6 @@ def borar_cancion(request,cancion_id):
     califica_cancion.delete()
     canciones = Cancion.objects.filter(user=request.user)
 
-
-
     context = {
         'canciones': canciones,
         'username': request.user.username,
@@ -252,6 +250,16 @@ def detail_lista(request, lista_id):
         'lista':lista,
     }
     return render(request, 'MyMusic/lista_detail.html', context)
+
+def reproductor(request, count_id,cantidad,urlcancion):
+    context={
+        'success':True,
+        'tag_id': count_id,
+        'url_c':urlcancion,
+        'tam':cantidad,
+    }
+    return JsonResponse(context)
+
 
 def calificar(request,ratin, cancion_id):
 

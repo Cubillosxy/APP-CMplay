@@ -20,12 +20,13 @@ urlpatterns = [
     url(r'^(?P<cancion_id>[0-9]+)/borrar_cancion/$', views.borar_cancion, name='eliminar_cancion'),
     url(r'^(?P<ratin>[0-9]+)/(?P<cancion_id>[0-9]+)/$', views.calificar, name='ratin_cancion'),
     url(r'^(?P<lista_id>[0-9]+)/borrar/(?P<cancion_id>[0-9]+)/$', views.borrar_cancio_lista, name='borrar_cancion_lista'),
-
-    #en edicion
-
     url(r'^(?P<lista_id>[0-9]+)/$', views.editar_lista, name='editar_list'),
 
-    #url(r'^(?P<ratin>[0-9]+)/(?P<cancion_act>[a-zA_Z]+)/$',views.calificar,name='ratin_cancion'),
+    #en edicion
+    url(r'^(?P<count_id>[0-9]+)/(?P<cantidad>[0-9]+)/(?P<urlcancion>\d+)/$', views.reproductor, name='reproduce'),
+   # url(r'^(?P<count_id>[0-9]+)/reproducir/(?P<url_cancion>[a-zA_Z]+)/(?P<cantidad>[0-9]+)/$', views.reproductor, name='reproduce'),
+
+    #url(r'^(?P<ratin>[c0-9]+)/(?P<cancion_act>[a-zA_Z]+)/$',views.calificar,name='ratin_cancion'),
 
 
 ]

@@ -4,6 +4,7 @@
     CMPlaylist-Detalles Lista
 </title>
 
+
 {% extends 'MyMusic/plantilla.html' %}
 
 
@@ -19,6 +20,12 @@
             <div class="panel panel-collapse ">
                 <div class="panel-default">
                    <h2 class="text-center" style="text-transform: capitalize"> {{ lista.titulo_de_lista }}</h2>
+
+                    <div class="text-center">
+                        <audio src="" controls id="audioPlayer" >
+                            Lo sentimos tu navegador no soporta el reproductor de audio
+                        </audio>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr>
@@ -28,13 +35,14 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="list_can">
                         {% for cancion in lista.canciones.all %}
-                            <tr>
+
+                            <tr >
                                 <td style="text-transform: capitalize"> &nbsp;&nbsp;{{ cancion.titulo_cancion }}</td>
                                 <td style="text-transform: capitalize">&nbsp;&nbsp;{{ cancion.artista }}</td>
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a target="_blank" href="{{ cancion.audio.url }}">
+                                <td id="boplay" class="tdcan">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a  href="{{ cancion.audio.url }} " id="can{{ forloop.counter }}">
                                         <button type="button" class="btn btn-success btn-xs">
                                             <span class="glyphicon glyphicon-play">&nbsp;</span>Play
                                         </button>
@@ -68,4 +76,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

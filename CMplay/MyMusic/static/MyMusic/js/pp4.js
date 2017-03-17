@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function start() {
 	//$(html), '. todas las clases con ese tag'
 	$('.btn-canciones').on('click', function(e) {
 	//$('.btn-canciones').click(function(e){
@@ -23,4 +23,9 @@ $(document).ready(function() {
 
 		return false;
 	});
+}
+
+
+$(document).ready(function() {
+	start();
 });

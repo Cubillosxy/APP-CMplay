@@ -44,14 +44,15 @@
                         {% for song in canciones %}
                             {% with cali=song.calificacion_set.filter user_calificador=username %}
                             <tr>
-                                <td> &nbsp;&nbsp;{{ song.titulo_cancion }}</td>
-                                <td>&nbsp;&nbsp;{{ song.artista }}</td>
-                                <td>&nbsp;&nbsp;
+                                <td style="text-transform: capitalize"> &nbsp;&nbsp;{{ song.titulo_cancion }}</td>
+                                <td style="text-transform: capitalize">&nbsp;&nbsp;{{ song.artista }}</td>
+                                <td>&nbsp;&nbsp;&nbsp;
                                     <a target="_blank" href="{{ song.audio.url }}">
                                         <button type="button" class="btn btn-success btn-xs ">
-                                               <span class="glyphicon glyphicon-play">&nbsp;Play</span>
+                                               <span class="glyphicon glyphicon-play">&nbsp;</span>Play
                                         </button>
                                      </a>
+
                                 </td>
                                 <td>
                                     {% if cali %}
@@ -76,7 +77,7 @@
 
                                 </td>
                                 <td>
-                                   &nbsp;&nbsp; {{ song.user.username }}
+                                   &nbsp;&nbsp; <span class="text-success">{{ song.user.username }}</span>
 
                                 </td>
                                 <td>
