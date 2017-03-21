@@ -6,7 +6,7 @@ _Es un servidor de prueba puede que ya no este en ese dominio._
 
 ![Index](https://github.com/Cubillosxy/APP-CMplay/blob/master/CMplay/media/index2.png)
 
-para ver más detalladamente ver
+para ver más detalles 
 https://github.com/Cubillosxy/APP-CMplay
 
 De que se trata la APP
@@ -44,5 +44,5 @@ Edwin Cubillos, Colombia : edwin.cubillos@uptc.edu.co
 
 
 <p align="center">This project is licensed under the GNU License.</br>
-Copyright  2016 Edwin Cubillos</p>
+Copyright  2017 Edwin Cubillos</p>
 
